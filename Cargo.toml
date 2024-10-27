@@ -1,0 +1,10 @@
+[package]
+name = "jmbg_parser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nom = "7.1"
+clap = { version = "4.0", features = ["derive"] }
+chrono = "0.4"
+thiserror = "1.0"
