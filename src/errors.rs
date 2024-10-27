@@ -2,18 +2,18 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum JmbgError {
-    #[error("JMBG mora imati tačno 13 cifara")]
+    #[error("JMBG must have exactly 13 digits")]
     InvalidLength,
 
-    #[error("Kontrolna cifra nije validna")]
+    #[error("Control digit is not valid")]
     InvalidControlDigit,
 
-    #[error("Nevažeći datum rođenja")]
+    #[error("Invalid date of birth")]
     InvalidDate,
 
-    #[error("Greška pri konvertovanju jedinstvenog broja u broj")]
+    #[error("Error converting the unique number to a number")]
     InvalidUniqueNumber,
 
-    #[error("Nepoznat region")]
+    #[error("Unknown region")]
     UnknownRegion,
 }
