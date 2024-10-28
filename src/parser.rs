@@ -1,8 +1,10 @@
 use crate::errors::JmbgError;
 use crate::utils::{Gender, Region};
 use chrono::NaiveDate;
-
+use serde::Serialize;
 /// Structure that represents a person's data based on the JMBG
+///
+#[derive(Debug, Serialize)]
 pub struct Person {
     pub date_of_birth: NaiveDate, // NaiveDate for date of birth
     pub region: Region,           // Region code
@@ -105,7 +107,11 @@ pub fn parse_jmbg(jmbg: &str) -> Result<Person, JmbgError> {
         NaiveDate::from_ymd_opt(year as i32, month, day).ok_or(JmbgError::InvalidDate)?;
 
     // Determine gender based on the unique number
-    let gender = Gender::from_unique_number(unique_number);
+
+    let gender = match unique_number.try_into() {
+        Ok(gender) => gender,
+        Err(_) => unreachable!(),
+    };
 
     let region = Region::try_from(region).map_err(|_| JmbgError::UnknownRegion)?;
 

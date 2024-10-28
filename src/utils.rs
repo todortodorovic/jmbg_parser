@@ -1,24 +1,27 @@
+use crate::errors::JmbgError;
 use num_enum::TryFromPrimitive;
+use serde::Serialize;
 
-#[derive(Debug, PartialEq, TryFromPrimitive)]
+#[derive(Debug, PartialEq, Serialize)]
 #[repr(u32)] // Ensures each variant is represented by a u32
 pub enum Gender {
     Male = 0,
     Female = 1,
 }
 
-impl Gender {
-    /// Kreiranje `Gender` iz `unique_number` (BBB)
-    pub fn from_unique_number(unique_number: u32) -> Gender {
-        if (0..=499).contains(&unique_number) {
-            Gender::Male
-        } else {
-            Gender::Female
+impl TryFrom<u32> for Gender {
+    type Error = JmbgError;
+
+    fn try_from(unique_number: u32) -> Result<Self, Self::Error> {
+        match unique_number {
+            0..=499 => Ok(Gender::Male),
+            500..=999 => Ok(Gender::Female),
+            _ => Err(JmbgError::InvalidUniqueNumber),
         }
     }
 }
 
-#[derive(Debug, PartialEq, TryFromPrimitive)]
+#[derive(Debug, PartialEq, TryFromPrimitive, Serialize)]
 #[repr(u32)] // Ensures each variant is represented by a u32
 pub enum Region {
     StranciUBiH = 1,

@@ -4,6 +4,7 @@ mod utils;
 use clap::Parser;
 use parser::parse_jmbg;
 use parser::validate_jmbg;
+use serde_json::to_string_pretty;
 use std::process;
 
 #[derive(Parser)]
@@ -31,10 +32,11 @@ fn main() {
 
     match parse_jmbg(jmbg) {
         Ok(person) => {
-            println!("Date of birth: {}", person.date_of_birth);
-            println!("Region: {:?}", person.region);
-            println!("Unique number: {}", person.unique_number);
-            println!("Gender: {:?}", person.gender);
+            // Convert the `Person` struct to a pretty JSON string and print it
+            match to_string_pretty(&person) {
+                Ok(pretty_json) => println!("{}", pretty_json),
+                Err(e) => println!("Error converting to JSON: {}", e),
+            }
         }
         Err(e) => {
             println!("Error parsing JMBG: {}", e);
